@@ -1,5 +1,6 @@
-/raw
-/test
-/test_labels
-/train
-/train_labels
+data/raw
+data/test
+data/test_labels
+data/train
+data/train_labels
+/old

@@ -10,16 +10,18 @@ from preprocess import preprocess_dataset
 from util import clean_mkdir, load_data
 
 
-def train(data_path, model_path, epochs=10, batch_size=32):
+def train(data_path, model_path, epochs=10, batch_size=16):
     preprocess_dataset(data_path)
-    train_path = str(data_path / "train")
-    train_labels_path = str(data_path / "train_labels")
+    train_path = str(data_path + "/train")
+    train_labels_path = str(data_path + "/train_labels")
     clean_mkdir("checkpoints")
     checkpointer = ModelCheckpoint(
         filepath="checkpoints/weights.h5", verbose=1, save_best_only=True
     )
     model = get_model()
+    print('part 1')
     x, y = load_data(train_path, train_labels_path)
+    print('part 2')
     model.fit(
         x,
         y,
@@ -29,12 +31,13 @@ def train(data_path, model_path, epochs=10, batch_size=32):
         shuffle=True,
         callbacks=[checkpointer],
     )
+    print('part 3')
     model.save(model_path)
 
 
 def test(data_path, model_weights_path):
-    test_path = str(data_path / "test")
-    test_labels_path = str(data_path / "test_labels")
+    test_path = str(data_path + "/test")
+    test_labels_path = str(data_path + "/test_labels")
     model = get_model(model_weights_path)
     x, y = load_data(test_path, test_labels_path)
     score = model.evaluate(x, y)
@@ -55,7 +58,7 @@ def run(data_path, model_weights_path, output_path):
                         out_array[index][i][j][k] = 1.0
 
         out_img = Image.fromarray(np.uint8(out_array[0] * 255))
-        out_img.save(str(output_path / "{}.jpg".format(index)))
+        out_img.save(str(output_path + "/{}.jpg".format(index)))
 
 
 if __name__ == "__main__":

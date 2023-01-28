@@ -4,6 +4,8 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
+import shutil
+
 IMAGES_PATH = "images"
 RAW_PATH = "raw"
 TEST_PATH = "test"
@@ -17,25 +19,25 @@ MAX_VAL = 2 ** 8 - 1
 
 def clean_mkdir(path):
     if Path(path).exists():
-        os.rmdir(path)
-
+        shutil.rmtree(path)
     os.makedirs(path)
 
 
-def load_data(x_path, y_path=None):
+def load_data(x_path, y_path):
     x, y = [], []
     index = 0
     for file in os.listdir(x_path):
         index += 1
-        img = Image.open(x_path + file)
+        img = Image.open(x_path + '/' + file)
         img_array = np.asarray(img, dtype="uint8")
         img_array = img_array / (MAX_VAL * 1.0)
         x.append(img_array)
+        
+        img = Image.open(y_path + '/' + file)
+        img_array = np.asarray(img, dtype="uint8")
+        img_array = img_array / (MAX_VAL * 1.0)
+        y.append(img_array)
+        print('y', index)
 
-        if y_path is None:
-            img = Image.open(y_path + file)
-            img_array = np.asarray(img, dtype="uint8")
-            img_array = img_array / (MAX_VAL * 1.0)
-            y.append(img_array)
-
+    print(index, np.array(x), np.array(y))
     return np.array(x), np.array(y)

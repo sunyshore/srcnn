@@ -25,11 +25,14 @@ def generate_samples(image_path, data_path):
     rows = img_src.height
     cols = img_src.width
 
+    rows = int(rows)
+    cols = int(cols)
+
     count = 0
     # iterate starting X
-    for i in range(0, cols - COLS - 1, COLS / 2):
+    for i in range(0, int(cols) - COLS - 1, int(COLS / 2)):
         # iterate starting Y
-        for j in range(0, rows - ROWS - 1, ROWS / 2):
+        for j in range(0, int(rows) - ROWS - 1, int(ROWS / 2)):
             img_out = img_src.crop((i, j, i + ROWS, j + COLS))
             img_out.save("{}/{}_{:05d}.jpg".format(output_path, filename, count))
             count += 1
@@ -77,14 +80,12 @@ def generate_dirty(data_path: Path):
         data_path:
 
     """
-    input_train_path = data_path / "train_labels"
-    input_test_path = data_path / "test_labels"
+    input_train_path = data_path / "train"
+    input_test_path = data_path / "test"
 
-    output_train_path = data_path / "train"
-    output_test_path = data_path / "test"
+    output_train_path = data_path / "train_labels"
+    output_test_path = data_path / "test_labels"
 
-    clean_mkdir(str(output_train_path))
-    clean_mkdir(str(output_test_path))
 
     for file in os.listdir(str(input_train_path)):
         img = Image.open(str(input_train_path / file))
@@ -100,6 +101,11 @@ def generate_dirty(data_path: Path):
 
 
 def preprocess_dataset(data_path):
+    clean_mkdir(str('/Users/mercy/Downloads/0_skool/0_clubs/qhax2023/srcnn/data/train'))
+    clean_mkdir(str('/Users/mercy/Downloads/0_skool/0_clubs/qhax2023/srcnn/data/train_labels'))
+    clean_mkdir(str('/Users/mercy/Downloads/0_skool/0_clubs/qhax2023/srcnn/data/test'))
+    clean_mkdir(str('/Users/mercy/Downloads/0_skool/0_clubs/qhax2023/srcnn/data/test_labels'))
+
     data_path = Path(data_path)
     images_path = data_path / IMAGES_PATH
     for filename in os.listdir(str(images_path)):

@@ -19,9 +19,7 @@ def train(data_path, model_path, epochs=10, batch_size=16):
         filepath="checkpoints/weights.h5", verbose=1, save_best_only=True
     )
     model = get_model()
-    print('part 1')
     x, y = load_data(train_path, train_labels_path)
-    print('part 2')
     model.fit(
         x,
         y,
@@ -32,7 +30,7 @@ def train(data_path, model_path, epochs=10, batch_size=16):
         callbacks=[checkpointer],
     )
     print('part 3')
-    model.save(model_path)
+    model.save('model.h5', model_path)
 
 
 def test(data_path, model_weights_path):
@@ -46,9 +44,16 @@ def test(data_path, model_weights_path):
 
 def run(data_path, model_weights_path, output_path):
     output_path = Path(output_path)
+
+    test_path = str(data_path + "/images/png2jpg")
+    test_labels_path = str(data_path + "/images/png2jpg")
     model = get_model(model_weights_path)
-    x, _ = load_data(data_path)
+    x, y = load_data(test_path, test_labels_path)
+
+    #model = get_model(model_weights_path)
+    #x, y = load_data(data_path)
     out_array = model.predict(x)
+    print('b')
     for index in range(out_array.shape[0]):
         num, rows, cols, channels = out_array.shape
         for i in range(rows):
@@ -58,7 +63,7 @@ def run(data_path, model_weights_path, output_path):
                         out_array[index][i][j][k] = 1.0
 
         out_img = Image.fromarray(np.uint8(out_array[0] * 255))
-        out_img.save(str(output_path + "/{}.jpg".format(index)))
+        out_img.save(str(output_path) + ("/{}.jpg".format(index)))
 
 
 if __name__ == "__main__":
@@ -89,7 +94,7 @@ if __name__ == "__main__":
     )
     params = parser.parse_args()
     if params.action == "train":
-        train(params.data_path, params.epochs, params.batch_size, params.model_path)
+        train(params.data_path, params.model_path, params.epochs, params.batch_size)
     elif params.action == "test":
         test(params.data_path, params.model_path)
     elif params.action == "run":

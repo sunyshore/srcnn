@@ -5,3 +5,7 @@ data/train
 data/train_labels
 /old
 local.md
+model.h5
+data/images
+data/images/png2jpg
+data/testing_images

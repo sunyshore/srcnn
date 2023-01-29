@@ -18,7 +18,7 @@ def generate_samples(image_path, data_path):
 
     """
     output_path = str(Path(data_path) / RAW_PATH)
-    clean_mkdir(output_path)
+    #clean_mkdir(output_path)
     filename = PurePath(image_path).stem
     img_src = Image.open(image_path)
 
@@ -105,10 +105,12 @@ def preprocess_dataset(data_path):
     clean_mkdir(str('/Users/mercy/Downloads/0_skool/0_clubs/qhax2023/srcnn/data/train_labels'))
     clean_mkdir(str('/Users/mercy/Downloads/0_skool/0_clubs/qhax2023/srcnn/data/test'))
     clean_mkdir(str('/Users/mercy/Downloads/0_skool/0_clubs/qhax2023/srcnn/data/test_labels'))
+    clean_mkdir(str('/Users/mercy/Downloads/0_skool/0_clubs/qhax2023/srcnn/data/raw'))
 
     data_path = Path(data_path)
     images_path = data_path / IMAGES_PATH
     for filename in os.listdir(str(images_path)):
+        print(filename)
         generate_samples(str(images_path / filename), data_path)
 
     split_sets(data_path)

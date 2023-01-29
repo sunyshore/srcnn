@@ -2,6 +2,8 @@ import argparse
 from pathlib import Path
 
 import numpy as np
+import tensorflow as tf
+import torch
 from PIL import Image
 from keras.callbacks import ModelCheckpoint
 
@@ -45,10 +47,16 @@ def test(data_path, model_weights_path):
 def run(data_path, model_weights_path, output_path):
     output_path = Path(output_path)
 
-    test_path = str(data_path + "/images/png2jpg")
-    test_labels_path = str(data_path + "/images/png2jpg")
+    test_path = str(data_path + "/images/sample")
+    test_labels_path = str(data_path + "/images/sample")
     model = get_model(model_weights_path)
     x, y = load_data(test_path, test_labels_path)
+    #x = np.asarray(x).astype(np.float32)
+    print('PEW PEW PEW')
+    print(x.shape)
+    #x = np.reshape(x, (3, ))
+    #x = np.vstack(x).astype(np.float)
+    x = tf.convert_to_tensor(x, dtype='float32')
 
     #model = get_model(model_weights_path)
     #x, y = load_data(data_path)

@@ -6,7 +6,7 @@ from PIL import Image
 
 import shutil
 
-IMAGES_PATH = "images/png2jpg"
+IMAGES_PATH = "images/sample"
 RAW_PATH = "raw"
 TEST_PATH = "test"
 TEST_LABELS_PATH = "test_labels"
